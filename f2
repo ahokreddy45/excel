@@ -1,0 +1,6 @@
+=TEXTJOIN(", ", TRUE,
+    IF(ISNUMBER(SEARCH("accident", A2)), "Accident", ""),
+    IF(OR(ISNUMBER(SEARCH("job loss", A2)), ISNUMBER(SEARCH("lost job", A2)), ISNUMBER(SEARCH("jobless", A2))), "Job Loss", ""),
+    IF(ISNUMBER(SEARCH("cancer", A2)), "Cancer", ""),
+    IF(OR(ISNUMBER(SEARCH("hospital", A2)), ISNUMBER(SEARCH("hospitalized", A2))), "Hospital", "")
+)
