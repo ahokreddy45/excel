@@ -1,0 +1,12 @@
+=IF(
+    ISERROR(
+        SUMIFS(Data!$AA:$AA, Data!$V:$V, 'Work sheet'!$A58, Data!$T:$T, 'Work sheet'!$B$1, Data!$P:$P, 'Work sheet'!$B$2, Data!$W:$W, 'Work sheet'!$B$3, Data!$U:$U, 'Work sheet'!B$5) /
+        SUMIFS(Data!$S:$S, Data!$V:$V, 'Work sheet'!$A58, Data!$T:$T, 'Work sheet'!$B$1, Data!$P:$P, 'Work sheet'!$B$2, Data!$W:$W, 'Work sheet'!$B$3, Data!$U:$U, 'Work sheet'!B$5)
+    ),
+    AVERAGE(
+        INDIRECT(ADDRESS(ROW()+1, COLUMN())),
+        INDIRECT(ADDRESS(ROW()+2, COLUMN()))
+    ),
+    SUMIFS(Data!$AA:$AA, Data!$V:$V, 'Work sheet'!$A58, Data!$T:$T, 'Work sheet'!$B$1, Data!$P:$P, 'Work sheet'!$B$2, Data!$W:$W, 'Work sheet'!$B$3, Data!$U:$U, 'Work sheet'!B$5) /
+    SUMIFS(Data!$S:$S, Data!$V:$V, 'Work sheet'!$A58, Data!$T:$T, 'Work sheet'!$B$1, Data!$P:$P, 'Work sheet'!$B$2, Data!$W:$W, 'Work sheet'!$B$3, Data!$U:$U, 'Work sheet'!B$5)
+)
