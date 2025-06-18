@@ -1,0 +1,27 @@
+Function GetDistance(pincode1 As String, pincode2 As String) As String
+    Dim http As Object
+    Dim JSON As Object
+    Dim url As String
+    Dim apiKey As String
+
+    apiKey = "AIzaSyCKOBZep-vgHuyPPJBtHQIyfD_dxTJnSck"  ' ? replace with your actual API key
+
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" & pincode1 & _
+          "&destinations=" & pincode2 & "&mode=driving&key=" & apiKey
+
+    Set http = CreateObject("MSXML2.XMLHTTP")
+    http.Open "GET", url, False
+    http.Send
+
+    Dim response As String
+    response = http.responseText
+
+    ' Simple string parsing (no JSON parser needed for this example)
+    Dim distanceStr As String
+    distanceStr = Split(Split(response, """distance""")(1), """text"" : """)(1)
+    distanceStr = Split(distanceStr, """")(0)
+
+    GetDistance = distanceStr
+End Function
+
+
