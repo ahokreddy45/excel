@@ -1,0 +1,42 @@
+import pandas as pd
+import googlemaps
+import time
+
+# Replace with your Google Maps API Key
+API_KEY = 'YOUR_GOOGLE_API_KEY'
+gmaps = googlemaps.Client(key=API_KEY)
+
+# Load your CSV
+df = pd.read_csv('pincodes.csv')
+
+# Create an empty list to store distances
+distances = []
+
+# Loop through each row
+for index, row in df.iterrows():
+    origin = str(row['pincode1'])
+    destination = str(row['pincode2'])
+    
+    try:
+        result = gmaps.distance_matrix(origins=origin,
+                                       destinations=destination,
+                                       mode='driving')
+        element = result['rows'][0]['elements'][0]
+        
+        if element['status'] == 'OK':
+            distance_text = element['distance']['text']
+        else:
+            distance_text = 'N/A'
+    except Exception as e:
+        distance_text = 'Error'
+
+    distances.append(distance_text)
+    
+    # To avoid hitting the rate limit
+    time.sleep(1)
+
+# Add distance column
+df['distance_km'] = distances
+
+# Save to a new Excel file
+df.to_excel('pincode_distances.xlsx', index=False)
