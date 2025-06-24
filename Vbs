@@ -1,0 +1,37 @@
+Sub GetDistanceOnce()
+    Dim origin As String
+    Dim destination As String
+    Dim http As Object
+    Dim response As String
+    Dim distanceStr As String
+    Dim url As String
+    Dim apiKey As String
+
+    ' Read inputs from Sheet1!A2 and B2
+    origin = Sheets("Sheet1").Range("A2").Value
+    destination = Sheets("Sheet1").Range("B2").Value
+    apiKey = "AIzaSyCKOBZep-vgHuyPPJBtHQIyfD_dxTJnSck" ' Your actual API Key
+
+    ' Build URL
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" & origin & _
+          "&destinations=" & destination & "&mode=driving&key=" & apiKey
+
+    ' Create HTTP request
+    Set http = CreateObject("MSXML2.XMLHTTP")
+    http.Open "GET", url, False
+    http.Send
+
+    ' Get response
+    response = http.responseText
+
+    ' Parse distance from response (simple string parsing)
+    If InStr(response, "distance") > 0 Then
+        distanceStr = Split(Split(response, """distance""")(1), """text"" : """)(1)
+        distanceStr = Split(distanceStr, """")(0)
+    Else
+        distanceStr = "Not Found"
+    End If
+
+    ' Output to Sheet1!C2
+    Sheets("Sheet1").Range("C2").Value = distanceStr
+End Sub
